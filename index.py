@@ -28,16 +28,26 @@ def extractURL(fileName):
             tempWord = word.split(":")
             #Check to see if the word is a URL
             if len(tempWord) == 2:
-                if tempWord[0] == "http" or tempWord[0] == "https":
+                if tempWord[0] == "http" or tempWord[0] == "https" or tempWord[0] == "www":
                     urlList.append(word)
 
     file.close()
-
-    return urlList[0]
+    if(len(urlList)==0):
+        print ("Email has no URL")
+        return None
+    else:
+        return urlList
 #checking and predicting
-checkprediction = inputScript.main(extractURL('email.txt'))
-prediction = classifier.predict(checkprediction)
-if (prediction == 1):
-    print("Email contains URL that may be a phishing attack!")
+if (extractURL('email.txt') == None):
+    print("Email does not contain a URL")
 else:
-    print("Email contains URL that seems safe")
+    urlValue = []
+    urlValue = extractURL('email.txt')
+    length = len(urlValue)
+    for i in range(length):
+        checkprediction = inputScript.main(urlValue[i])
+        prediction = classifier.predict(checkprediction)
+        if (prediction == 1):
+            print("Email contains URL that may be a phishing attack: " + urlValue[i])
+        else:
+            print("Email contains URL that seems safe: " + urlValue[i])
