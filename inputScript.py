@@ -11,7 +11,6 @@ import datetime
 
 
 def url_having_ip(url):
-
     return 0
 
 

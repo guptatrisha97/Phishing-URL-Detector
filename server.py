@@ -1,7 +1,7 @@
 import os
 import inputScript
 from flask import Flask
-from sklearn.externals import joblib
+import joblib
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for

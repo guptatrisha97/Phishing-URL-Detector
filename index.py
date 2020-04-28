@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #importing libraries
-from sklearn.externals import joblib
+import joblib
 import inputScript
 import imaplib, email
 import os, pkg_resources
@@ -47,6 +47,7 @@ else:
     for i in range(length):
         checkprediction = inputScript.main(urlValue[i])
         prediction = classifier.predict(checkprediction)
+        #print (prediction)
         if (prediction == 1):
             print("Email contains URL that may be a phishing attack: " + urlValue[i])
         else:
