@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #importing libraries
-from sklearn.externals import joblib
+import joblib
 import inputScript
 import imaplib, email
 import os, pkg_resources
@@ -47,9 +47,15 @@ else:
     length = len(urlValue)
     for i in range(length):
         checkprediction = inputScript.main(urlValue[i])
+<<<<<<< HEAD
         white_black_test = WhiteBlackApp(urlValue[i], self.domain)
         white_black_results = white_black_test.run()
         if white_black_results[0]:
+=======
+        prediction = classifier.predict(checkprediction)
+        #print (prediction)
+        if (prediction == 1):
+>>>>>>> b57b169535b57c497d9e244b4ddd8785e0632966
             print("Email contains URL that may be a phishing attack: " + urlValue[i])
         elif white_black_results[1]:
             print("Email contains URL that seems safe: " + urlValue[i])

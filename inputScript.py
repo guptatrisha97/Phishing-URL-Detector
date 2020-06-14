@@ -8,11 +8,14 @@ from bs4 import BeautifulSoup
 import urllib.request
 import whois
 import datetime
-
+import ipaddress
 
 def url_having_ip(url):
-
-    return 0
+    try:
+        ipaddress.ip_address(url)
+        return(-1)
+    except:
+        return(1)
 
 
 def url_length(url):
@@ -26,8 +29,17 @@ def url_length(url):
 
 
 def url_short(url):
-    #ongoing
-    return 0
+   match=regex.search('bit\.ly|goo\.gl|shorte\.st|go2l\.ink|x\.co|ow\.ly|t\.co|tinyurl|tr\.im|is\.gd|cli\.gs|'
+                    'yfrog\.com|migre\.me|ff\.im|tiny\.cc|url4\.eu|twit\.ac|su\.pr|twurl\.nl|snipurl\.com|'
+                    'short\.to|BudURL\.com|ping\.fm|post\.ly|Just\.as|bkite\.com|snipr\.com|fic\.kr|loopt\.us|'
+                    'doiop\.com|short\.ie|kl\.am|wp\.me|rubyurl\.com|om\.ly|to\.ly|bit\.do|t\.co|lnkd\.in|'
+                    'db\.tt|qr\.ae|adf\.ly|goo\.gl|bitly\.com|cur\.lv|tinyurl\.com|ow\.ly|bit\.ly|ity\.im|'
+                    'q\.gs|is\.gd|po\.st|bc\.vc|twitthis\.com|u\.to|j\.mp|buzurl\.com|cutt\.us|u\.bb|yourls\.org|'
+                    'x\.co|prettylinkpro\.com|scrnch\.me|filoops\.info|vzturl\.com|qr\.net|1url\.com|tweez\.me|v\.gd|tr\.im|link\.zip\.net',url)
+   if match:
+    return(-1)
+   else:
+    return(1)
 
 def having_at_symbol(url):
     symbol=regex.findall(r'@',url)
@@ -37,8 +49,11 @@ def having_at_symbol(url):
         return 1
 
 def doubleSlash(url):
-    #ongoing
-    return 0
+  list=[x.start(0) for x in regex.finditer('//', url)]
+  if list[len(list)-1]>6:
+        return(-1)
+  else:
+        return(1)
 
 def prefix_suffix(url):
     subDomain, domain, suffix = extract(url)
@@ -116,8 +131,17 @@ def favicon(url):
     return 0
 
 def port(url):
-    #ongoing
-    return 0
+  domain = regex.findall(r"://([^/]+)/?", url)[0]
+  if regex.match(r"^www.",domain):
+	       domain = domain.replace("www.","")
+  try:
+    port = domain.split(":")[1]
+    if port:
+            return(-1)
+    else:
+            return(1)
+  except:
+        return(1)
 
 def https_token(url):
     subDomain, domain, suffix = extract(url)
@@ -307,7 +331,9 @@ def statistical(url):
 
 def main(url):
 
-
+    # Converts the given URL into standard format
+    if not regex.match(r"^https?", url):
+        url = "http://" + url
 
 
     check = [[url_having_ip(url),url_length(url),url_short(url),having_at_symbol(url),
