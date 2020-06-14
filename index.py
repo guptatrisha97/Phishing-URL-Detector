@@ -6,6 +6,7 @@ import inputScript
 import imaplib, email
 import os, pkg_resources
 import importlib.resources as pkg_resources
+from whiteBlacklist import WhiteBlackApp
 #load the pickle file
 classifier = joblib.load('final_models/rf_final.pkl')
 
@@ -46,8 +47,15 @@ else:
     length = len(urlValue)
     for i in range(length):
         checkprediction = inputScript.main(urlValue[i])
-        prediction = classifier.predict(checkprediction)
-        if (prediction == 1):
+        white_black_test = WhiteBlackApp(urlValue[i], self.domain)
+        white_black_results = white_black_test.run()
+        if white_black_results[0]:
             print("Email contains URL that may be a phishing attack: " + urlValue[i])
-        else:
+        elif white_black_results[1]:
             print("Email contains URL that seems safe: " + urlValue[i])
+        prediction = classifier.predict(checkprediction)
+        else:
+            if (prediction == 1):
+                print("Email contains URL that may be a phishing attack: " + urlValue[i])
+            else:
+                print("Email contains URL that seems safe: " + urlValue[i])
